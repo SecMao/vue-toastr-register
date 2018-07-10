@@ -1,3 +1,4 @@
+/** Toastr的简单实现，仅供提示错误信息使用 **/
 <template>
   <div class="toast-container toast-top-right">
     <div class="toast toast-error" v-show="visible" @click="clicked" @mouseover="onMouseOver"
@@ -15,40 +16,66 @@
       return {
         message: '',
         visible: false,
-        timeoutId: 0
+        timeoutId: 0,
       }
     },
     methods: {
+      /**
+       * 提示错误信息
+       * @param message
+       * @returns {Function}
+       */
       error (message) {
         this.message = message
         this.showToastr()
         return () => {}
       },
+      /**
+       * 调用错误提示
+       */
       showError () {
         this.error('toastr实例不存在，请确认已在页面引入toastr文件')
       },
+      /**
+       * 显示提示
+       */
       showToastr () {
         this.visible = true
         this.setTimeout()
       },
+      /**
+       * 隐藏提示
+       */
       hideToastr () {
         this.visible = false
         this.message = ''
         window.clearTimeout(this.timeoutId)
         this.timeoutId = 0
       },
+      /**
+       * 设置定时隐藏
+       */
       setTimeout () {
         this.timeoutId = setTimeout((that = this) => {
           that.hideToastr()
         }, 3000)
       },
+      /**
+       * 点击隐藏
+       */
       clicked () {
         this.hideToastr()
       },
+      /**
+       * 鼠标移入保持显示
+       */
       onMouseOver () {
         window.clearTimeout(this.timeoutId)
         this.timeoutId = 0
       },
+      /**
+       * 鼠标移出定时隐藏
+       */
       onMouseOut () {
         this.setTimeout()
       },
